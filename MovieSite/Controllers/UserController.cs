@@ -111,7 +111,7 @@ namespace ProjectManager.Controllers
             user.username = item.Username;
             user.password = item.Password;
             user.email = item.Email;
-          
+            user.IsAdmin = item.IsAdmin;
 
             userRepo.AddUser(user);
 
@@ -156,11 +156,11 @@ namespace ProjectManager.Controllers
         {
             UsersRepository userRepo = new UsersRepository();
             User user = new User();
-            item.ID = user.Id;
-            item.Username = user.username;
-            item.Password = user.password;
-            item.Email = user.email;
-            item.IsAdmin = user.IsAdmin;
+            user.Id = item.ID;
+            user.username = item.Username;
+            user.password = item.Password;
+            user.email = item.Email;
+            user.IsAdmin = item.IsAdmin;
 
 
             userRepo.UpdateUser(user);
