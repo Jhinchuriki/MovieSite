@@ -1,19 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieSite.Entity;
 using MovieSite.Data;
-using MovieSite.Service;
 using MovieSite.Repository;
 using MovieSite.ViewModel.UserVM;
 using MovieSite.ViewModel.Shared;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Scrypt;
 
 namespace ProjectManager.Controllers
 {
     public class UsersController : Controller
     {
+        private UsersRepository userRepo;
+
+        public UsersController()
+        {
+            this.userRepo = new UsersRepository();
+        }
         //------------------LOGOUT-------------------------------//
         public IActionResult Logout()
         {
-            Authentication.LoggedUser = null;
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
         }
         //-------------------------------------------------------//
@@ -37,7 +47,25 @@ namespace ProjectManager.Controllers
             user.email = item.Email;
             user.IsAdmin = false;
             usersRepository.AddUser(user);
-            Authentication.LoggedUser = user;
+            List<Claim> claims = new List<Claim>() {
+                    new Claim(ClaimTypes.NameIdentifier , $"{user.username}"),
+                    new Claim(ClaimTypes.Email , user.email),
+                    new Claim(ClaimTypes.Name, user.username),
+                    new Claim(ClaimTypes.Role , user.IsAdmin ? "Admin": "User"),
+                    new Claim(ClaimTypes.Sid , user.Id.ToString())
+                };
+
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+            CookieAuthenticationDefaults.AuthenticationScheme);
+
+            AuthenticationProperties properties = new AuthenticationProperties()
+            {
+                AllowRefresh = true,
+                IsPersistent = true
+            };
+
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity), properties);
 
             return RedirectToAction("Index", "Home");
         }
@@ -51,23 +79,43 @@ namespace ProjectManager.Controllers
         [HttpPost]
         public IActionResult Login(string Email, string Password)
         {
-            Authentication.GetInfoToLoggedUser(Email, Password);
-
-            if (Authentication.LoggedUser != null)
+            User user = userRepo.getByEmailAndPassword(Email, Password);
+            if (user == null)
             {
-                return RedirectToAction("Index", "Home");
+                return View(Email, Password);
             }
             else
             {
-                return RedirectToAction("Login");
+                List<Claim> claims = new List<Claim>() {
+                    new Claim(ClaimTypes.NameIdentifier , $"{user.username}"),
+                    new Claim(ClaimTypes.Email , user.email),
+                    new Claim(ClaimTypes.Name, user.username),
+                    new Claim(ClaimTypes.Role , user.IsAdmin ? "Admin": "User"),
+                    new Claim(ClaimTypes.Sid , user.Id.ToString())
+                };
+
+                ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true 
+                };
+
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity), properties);
             }
+            return RedirectToAction("Index", "Home");
 
         }
         //-------------------------------------------------------//
         //------------------DISPLAYS ALL USERS-------------------//
         public IActionResult UserList(IndexVM model)
         {
-            if (Authentication.LoggedUser != null)
+            if (!User.Identity.IsAuthenticated || User.IsInRole("User"))
+                return RedirectToAction("Index", "Home");
+            else
             {
 
                 model.Pager ??= new PagerVM();
@@ -88,10 +136,7 @@ namespace ProjectManager.Controllers
 
                 return View(model);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            
         }
         //-------------------------------------------------------//
         //------------------ADD METHOD---------------------------//
@@ -115,7 +160,7 @@ namespace ProjectManager.Controllers
 
             userRepo.AddUser(user);
 
-            if (Authentication.LoggedUser.IsAdmin)
+            if (!User.Identity.IsAuthenticated || User.IsInRole("User"))
             {
                 return RedirectToAction("UserList", "Users");
             }

@@ -9,9 +9,13 @@ namespace MovieSite.Entity
     {
         [Key]
         public int Id { get; set; }
+        [Required]
+        public MovieCategory movieCategory { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string Description { get; set; }
-        public MovieCategory MovieCategory { get; set; }
-        
+        public string fileName { get; set; }
+
     }
 }

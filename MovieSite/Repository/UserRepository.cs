@@ -10,11 +10,11 @@ namespace MovieSite.Repository
 {
     public class UsersRepository
     {
-        static readonly AppDbContext context;
+        private  AppDbContext context;
        
-        static UsersRepository()
+        public UsersRepository()
         {
-            context = new AppDbContext();
+            this.context = new AppDbContext();
         }
         public bool UserExisting(int id)
         {
@@ -40,12 +40,8 @@ namespace MovieSite.Repository
             context.SaveChanges();
         }
         public void DeleteUser(int id)
-        {
-            
+        {            
             User user = context.Users.Find(id);
-
-          
-
             context.Users.Remove(user);
             context.SaveChanges();
         }
@@ -69,11 +65,11 @@ namespace MovieSite.Repository
 
             return query.OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
-        public User getByUsernameAndPassword(string username, string password)
+        public User getByEmailAndPassword(string email, string password)
         {
             foreach (var item in context.Users)
             {
-                if (item.email == username && item.password == password)
+                if (item.email == email && item.password == password)
                 {
                     return item;
                 }

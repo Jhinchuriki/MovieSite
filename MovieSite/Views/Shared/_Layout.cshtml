@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
 </head>
+<body>
  <header class="header">
     @* <div id="preloder">
         <div class="loader"></div>
@@ -50,7 +51,7 @@
                                         <li><a href="/Users/Login">Login</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="/Movie/Blog">Our Blog</a></li>
+                              
                                 <li><a href="#">Contacts</a></li>
                             </ul>
                         </nav>
@@ -59,13 +60,14 @@
                 <div class="col-lg-2">
                     <div class="header__right">
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="/Home/login"><span class="icon_profile"></span></a>
+                        <a href="/Users/login"><span class="icon_profile"></span></a>
                     </div>
                 </div>
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
-    </header>  @RenderBody()
+    </header> </body>
+    @RenderBody()
 
 <body>    
     <footer class="footer">
@@ -83,7 +85,7 @@
                 <div class="footer__nav">
                     <ul>
                         <li class="active"><a href="/Home/index">Homepage</a></li>
-                        <li><a href=""/Movie/categories">Categories</a></li>
+                        <li><a href="/Movie/categories">Categories</a></li>
                         <li><a href="/Movie/blog">Our Blog</a></li>
                         <li><a href="#">Contacts</a></li>
                     </ul>

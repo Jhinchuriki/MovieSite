@@ -1,6 +1,6 @@
 ﻿namespace MovieSite.Data.Enums
 {
-    public enum MovieCategory
+    public  enum MovieCategory
     {
         Action,
         Adventure,

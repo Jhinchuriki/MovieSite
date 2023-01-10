@@ -1,7 +1,6 @@
-﻿@using MovieSite.Repository
+﻿@using MovieSite.Data.Enums
 
-@using MovieSite.Entity
-@model MovieSite.ViewModel.UserVM.IndexVM
+@model MovieSite.ViewModel.MovieVM.DisplayVM
 @{
     ViewBag.Title = "USER LIST";
     Layout = "/Views/Shared/_Layout.cshtml";
@@ -9,29 +8,27 @@
 <div class="grid">
 
         
-            <form action="/Users/UserList" method="get">
+            <form action="/Movie/MovieAdmin" method="get">
                     <div class = "row" style = "margin-left:250px">
                         <div class = "col-4">
-                            @Html.LabelFor(x=>x.Filter.Username)
+                            @Html.LabelFor(x=>x.Filter.Title)
                         </div>
                         <div class = "col-4">
-                            @Html.LabelFor(x=>x.Filter.Email)
-                        </div>
-                        
-                        <div class = "col-2">
+                            @Html.LabelFor(x=>x.Filter.Description)
+                                            <div class = "col-2">
                         </div>
                     </div>
                     <div class = "row" style = "margin-left:250px">
                         <div class = "col-4">
-                            @Html.TextBoxFor(x=>x.Filter.Username)
+                            @Html.TextBoxFor(x=>x.Filter.Title)
                         </div>
                         <div class = "col-4">
-                            @Html.TextBoxFor(x=>x.Filter.Email)
+                            @Html.TextBoxFor(x=>x.Filter.Description)
                         </div>
                        
                         <div class = "col-2">
                             <input type = "submit" value = "Filter"/>
-                            <a href = "/Users/UserList">Clear</a>
+                            <a href = "/Movie/MovieAdmin">Clear</a>
                         </div>
                     </div>
             </form>
@@ -43,25 +40,23 @@
 
         <div class = "row" style = "margin-left:250px">
             <div class = "col-3">
-                <a class = "left"href="/Users/Create">NEW</a>
+                <a class = "left"href="/Movie/Create">NEW</a>
             </div>
         </div>
 
     <div class = "row" style = "margin-left:250px">
 
         <div class="col-1 textColor">
-            Username
+            Title
         </div>
 
         <div class="col-1 textColor">
-            Email
+            Description
         </div>
-
+         <div class="col-1 textColor">
+            Category
+        </div>
        
-
-        <div class="col-1 textColor">
-            Admin
-        </div>
 
         <div class="col-1 textColor">
             Actions
@@ -69,20 +64,20 @@
         <div class="col-2">
         </div>
     </div>
-@foreach (var item in Model.Items) {
+@foreach (var item in Model.Movies) {
     <div class = "row" style = "margin-left:250px">
             <div class = "col-1">
-                @item.username
+                @item.Title
             </div>
 
             <div class = "col-1">
-                @item.email
+                @item.Description
             </div>
 
             
 
             <div class = "col-1">
-                @item.IsAdmin
+                @item.movieCategory;
             </div>
 
             <div class = "col-2">

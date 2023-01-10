@@ -1,5 +1,5 @@
 ﻿using MovieSite.Entity;
-using MovieSite.Service;
+
 using MovieSite.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
@@ -25,34 +25,34 @@ namespace MovieSite.Repository
         }
         public void InsertMovie(Movie item)
         {
-           
+
             Movie movie = new Movie();
 
-           movie.Title = item.Title;
+            movie.Title = item.Title;
             movie.Description = item.Description;
-            movie.MovieCategory = item.MovieCategory;
+            movie.movieCategory = item.movieCategory;
             context.Movies.Add(movie);
             context.SaveChanges();
         }
         public void DeleteMovieByID(int id)
         {
-           
+
             Movie movie = context.Movies.Find(id);
-            
+
             context.Movies.Remove(movie);
-            
+
             context.SaveChanges();
         }
-       
+
         public void UpdateMovie(Movie item)
         {
-           
-           Movie movie= context.Movies.Find(item.Id);
+
+            Movie movie = context.Movies.Find(item.Id);
 
             movie.Id = item.Id;
             movie.Title = item.Title;
             movie.Description = item.Description;
-            movie.MovieCategory = item.MovieCategory;
+            movie.movieCategory = item.movieCategory;
 
             context.Entry(movie).State = EntityState.Modified;
             context.SaveChanges();
@@ -75,5 +75,6 @@ namespace MovieSite.Repository
 
             return query.OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
+        
     }
 }
