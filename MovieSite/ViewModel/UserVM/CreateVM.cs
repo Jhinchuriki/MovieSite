@@ -16,7 +16,6 @@ namespace MovieSite.ViewModel.UserVM
         [Display(Name = "IsAdmin: ")]
 
         public bool IsAdmin { get; set; }
-       
-        
+
     }
 }

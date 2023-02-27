@@ -7,7 +7,7 @@ namespace MovieSite.ViewModel.MovieVM
     public class FilterVM
     {
         public string Title { get; set; }
-        public string Description{ get; set; }
+        public string Description { get; set; }
         public Expression<Func<Movie, bool>> GetFilter()
         {
             return i => (string.IsNullOrEmpty(Title) || i.Title.Contains(Title)) &&

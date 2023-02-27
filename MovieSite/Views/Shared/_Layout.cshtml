@@ -11,7 +11,7 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+          rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
@@ -24,10 +24,10 @@
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
 </head>
 <body>
- <header class="header">
-    @* <div id="preloder">
+    <header class="header">
+        @* <div id="preloder">
         <div class="loader"></div>
-    </div>*@
+        </div>*@
 
         <div class="container">
             <div class="row">
@@ -43,16 +43,13 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li class="active"><a href="~/Home/index">Homepage</a></li>
-                                <li><a href="/Movie/categories">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="/Movie/categories">Categories</a></li>
-                                        <li><a href="/Movie/details">Anime Details</a></li>                                        
-                                        <li><a href="/Users/SignUp">Sign Up</a></li>
-                                        <li><a href="/Users/Login">Login</a></li>
-                                    </ul>
-                                </li>
-                              
+                                <li><a href="/Movie/categories">Categories </a></li>
                                 <li><a href="#">Contacts</a></li>
+                                @if (User.Identity.IsAuthenticated || User.IsInRole("Admin"))
+                                {
+                                  <li><a href="/Movie/MovieAdmin">MovieAdmin</a></li>
+                                  <li><a href="/Users/UserList">UserAdmin</a></li>  
+                                }
                             </ul>
                         </nav>
                     </div>
@@ -61,64 +58,70 @@
                     <div class="header__right">
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
                         <a href="/Users/login"><span class="icon_profile"></span></a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <a href="/Users/Logout"><span class="fa fa-sign-out" aria-hidden="true"></span></a>
+                        }
                     </div>
                 </div>
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
-    </header> </body>
-    @RenderBody()
+    </header>
+</body>
+@RenderBody()
 
-<body>    
+<body>
     <footer class="footer">
-    <div class="page-up">
-        <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="footer__logo">
-                    <a href="/Home/index"><img src="~/img/logo.png" alt=""></a>
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton"><span class="arrow_carrot-up"></span></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="/Home/index"><img src="~/img/logo.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul>
+                            <li class="active"><a href="/Home/index">Homepage</a></li>
+                            <li><a href="/Movie/categories">Categories</a></li>
+                            
+                            <li><a href="#">Contacts</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="footer__nav">
-                    <ul>
-                        <li class="active"><a href="/Home/index">Homepage</a></li>
-                        <li><a href="/Movie/categories">Categories</a></li>
-                        <li><a href="/Movie/blog">Our Blog</a></li>
-                        <li><a href="#">Contacts</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        </div>
+    </footer>
 
-              </div>
-          </div>
-      </div>
-  </footer>
-
-   <div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch"><i class="icon_close"></i></div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
     </div>
-</div>
-<!-- Search model end -->
-
-<!-- Js Plugins -->
-<script src="~/js/jquery-3.3.1.min.js"></script>
-<script src="~/js/bootstrap.min.js"></script>
-<script src="~/js/player.js"></script>
-<script src="~/js/jquery.nice-select.min.js"></script>
-<script src="~/js/mixitup.min.js"></script>
-<script src="~/js/jquery.slicknav.js"></script>
-<script src="~/js/owl.carousel.min.js"></script>
-<script src="~/js/main.js"></script>
+    <!-- Search model end -->
+    <!-- Js Plugins -->
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/player.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/mixitup.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
 </body>
 </html>

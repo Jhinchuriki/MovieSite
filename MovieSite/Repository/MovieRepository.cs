@@ -1,5 +1,4 @@
 ﻿using MovieSite.Entity;
-
 using MovieSite.Data;
 using System.Data.Entity;
 using System.Linq.Expressions;
@@ -11,26 +10,21 @@ namespace MovieSite.Repository
 {
     public class MovieRepository
     {
-        static readonly AppDbContext context;
-
-        static MovieRepository()
+        private readonly AppDbContext context;
+        public MovieRepository()
         {
             context = new AppDbContext();
         }
-        public static Movie GetById(int id)
-        {
-            
-            Movie movie = context.Movies.Find(id);
-            return movie;
-        }
         public void InsertMovie(Movie item)
         {
-
             Movie movie = new Movie();
 
             movie.Title = item.Title;
             movie.Description = item.Description;
             movie.movieCategory = item.movieCategory;
+            movie.TrailerURL = item.TrailerURL;
+            
+
             context.Movies.Add(movie);
             context.SaveChanges();
         }
@@ -53,6 +47,9 @@ namespace MovieSite.Repository
             movie.Title = item.Title;
             movie.Description = item.Description;
             movie.movieCategory = item.movieCategory;
+            movie.TrailerURL = item.TrailerURL;
+            movie.Votes = item.Votes;
+            movie.IsFavorite = item.IsFavorite;
 
             context.Entry(movie).State = EntityState.Modified;
             context.SaveChanges();
@@ -66,7 +63,7 @@ namespace MovieSite.Repository
 
             return query.Count();
         }
-        
+
         public List<Movie> GetAll(Expression<Func<Movie, bool>> filter = null, int page = 1, int pageSize = int.MaxValue)
         {
             IQueryable<Movie> query = context.Movies;
@@ -75,6 +72,9 @@ namespace MovieSite.Repository
 
             return query.OrderBy(x => x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToList();
         }
-        
+        public Movie GetById(int id)
+        {
+            return context.Movies.Find(id);
+        }
     }
 }

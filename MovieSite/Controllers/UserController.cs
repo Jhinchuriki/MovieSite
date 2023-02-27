@@ -100,7 +100,7 @@ namespace ProjectManager.Controllers
                 AuthenticationProperties properties = new AuthenticationProperties()
                 {
                     AllowRefresh = true,
-                    IsPersistent = true 
+                    IsPersistent = true
                 };
 
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
@@ -136,7 +136,7 @@ namespace ProjectManager.Controllers
 
                 return View(model);
             }
-            
+
         }
         //-------------------------------------------------------//
         //------------------ADD METHOD---------------------------//
@@ -174,7 +174,7 @@ namespace ProjectManager.Controllers
         public IActionResult DeleteUser(int id)
         {
             UsersRepository userRepo = new UsersRepository();
-           
+
             userRepo.DeleteUser(id);
 
             return RedirectToAction("UserList", "Users");

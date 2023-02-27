@@ -50,11 +50,10 @@ namespace MovieSite.Controllers
 
             MovieRepository movieRepository = new MovieRepository();
             model.Movies = movieRepository.GetAll(filter, model.Pager.Page, model.Pager.ItemsPerPage);
-            model.Pager.PagesCount = (int)Math.Ceiling(movieRepository.MovieCount(filter) / (double)model.Pager.ItemsPerPage);
-            model.homeController = new HomeController(_webHostEnvironment);
+            model.Pager.PagesCount = (int)Math.Ceiling(movieRepository.MovieCount(filter) / (double)model.Pager.ItemsPerPage);           
             return View(model);
         }
-        
+
 
     }
 }
