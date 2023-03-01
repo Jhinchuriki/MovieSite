@@ -17,7 +17,6 @@ namespace MovieSite.Controllers
         private readonly FavoriteRepository favoriteRepository;
         private readonly CommentRepository commentRepository;
         private readonly RatingRepository ratingRepository;
-       
         public MovieController(IWebHostEnvironment webhost)
         {
             _webHostEnvironment = webhost;
@@ -26,14 +25,13 @@ namespace MovieSite.Controllers
             commentRepository = new CommentRepository();
             ratingRepository = new RatingRepository();
         }
-
         public IActionResult Categories()
         {
             return View();
         }
 
         public IActionResult MovieAdmin(DisplayVM model)
-        {           
+        {
             model.Pager ??= new PagerVM();
             model.Filter ??= new FilterVM();
             model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0
@@ -143,7 +141,7 @@ namespace MovieSite.Controllers
             movie.comments = commentRepository.GetallCommentsByMovieId(movie.id);
             return View(movie);
         }
-        
+
         public IActionResult Follow(int movieId)
         {
             if (!User.Identity.IsAuthenticated)
@@ -160,12 +158,12 @@ namespace MovieSite.Controllers
                 int UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
                 favoriteRepository.isFavorite(UserId, movieId);
             }
-            
-             
-            
+
+
+
             return RedirectToAction("Details", "Movie", new { id = movieId });
         }
-        public IActionResult AddComment(int movieId,string text)
+        public IActionResult AddComment(int movieId, string text)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -176,7 +174,7 @@ namespace MovieSite.Controllers
             comment.UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value);
             comment.Text = text;
             UsersRepository userrepo = new UsersRepository();
-            
+
             comment.Username = userrepo.GetUsernameById(Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value));
             commentRepository.InsertComment(comment);
             return RedirectToAction("Details", "Movie", new { id = movieId });
@@ -197,5 +195,23 @@ namespace MovieSite.Controllers
 
             return RedirectToAction("Details", "Movie", new { id = movieId });
         }
+        public IActionResult FavoriteList(DisplayVM model)
+        {
+            model.Pager ??= new PagerVM();
+            model.Filter ??= new FilterVM();
+            model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0
+                                        ? 10
+                                        : model.Pager.ItemsPerPage;
+
+            model.Pager.Page = model.Pager.Page <= 0
+                                        ? 1
+                                        : model.Pager.Page;
+
+            model.Movies = favoriteRepository.getAllFavorites(Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value));
+            model.Pager.PagesCount = (int)Math.Ceiling(favoriteRepository.getAllFavorites(Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value)).Count / (double)model.Pager.ItemsPerPage);
+
+            return View(model);
+        }
+
     }
 }

@@ -82,7 +82,7 @@ namespace ProjectManager.Controllers
             User user = userRepo.getByEmailAndPassword(Email, Password);
             if (user == null)
             {
-                return View(Email, Password);
+                return RedirectToAction("Login", "Users");
             }
             else
             {
@@ -213,5 +213,44 @@ namespace ProjectManager.Controllers
             return RedirectToAction("UserList", "Users");
         }
         //------------------------------------------------------//
+        [HttpGet]
+        public IActionResult UserSettings()
+        {
+            // Get the user from the database based on the ID
+            User user = userRepo.GetById(Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value));
+
+            // Create a view model to store the user's data
+            EditVM edit = new EditVM
+            {
+                ID = user.Id,
+                Username = user.username,
+                Email = user.email,
+                Password = ""
+            };
+
+            // Return the view with the view model
+            return View(edit);
+        }
+
+        [HttpPost]
+        public IActionResult UserSettings(EditVM viewModel)
+        {
+            // Get the user from the database based on the ID
+            User user = userRepo.GetById(Convert.ToInt32(User.FindFirst(ClaimTypes.Sid).Value));
+
+            // Update the user's email and password
+            user.email = viewModel.Email;
+            if (!string.IsNullOrEmpty(viewModel.Password))
+            {
+                user.password = viewModel.Password;
+            }
+
+            // Save the changes to the database
+            userRepo.UpdateUser(user);
+
+            // Redirect to the user list page
+            return RedirectToAction("UserSettings");
+        }
+
     }
 }

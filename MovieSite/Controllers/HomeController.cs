@@ -10,9 +10,6 @@ namespace MovieSite.Controllers
 {
     public class HomeController : Controller
     {
-
-
-
         private readonly IWebHostEnvironment _webHostEnvironment;
         private AppDbContext context;
         public HomeController(IWebHostEnvironment webHostEnvironment)

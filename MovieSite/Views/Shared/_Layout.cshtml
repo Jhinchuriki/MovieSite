@@ -47,8 +47,8 @@
                                 <li><a href="#">Contacts</a></li>
                                 @if (User.Identity.IsAuthenticated || User.IsInRole("Admin"))
                                 {
-                                  <li><a href="/Movie/MovieAdmin">MovieAdmin</a></li>
-                                  <li><a href="/Users/UserList">UserAdmin</a></li>  
+                                    <li><a href="/Movie/MovieAdmin">MovieAdmin</a></li>
+                                    <li><a href="/Users/UserList">UserAdmin</a></li>
                                 }
                             </ul>
                         </nav>
@@ -57,11 +57,30 @@
                 <div class="col-lg-2">
                     <div class="header__right">
                         <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="/Users/login"><span class="icon_profile"></span></a>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <a href="/Users/Logout"><span class="fa fa-sign-out" aria-hidden="true"></span></a>
-                        }
+                        
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li>
+                                    
+                                    <span class="icon_profile arrow_carrot-down" ></span>
+                                    <ul class="dropdown">
+
+                                        @if (!User.Identity.IsAuthenticated)
+                                        {
+                                            <li><a href="/Users/login">Login</a></li>
+                                             <li><a href="/Users/SignUp">Register</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="/Users/Logout">Logout</a></li>
+                                            <li><a href="/movie/favoritelist">Favorites</a></li>
+                                            <li><a href="/Users/UserSettings">User settings</a></li>
+                                        }
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                       
                     </div>
                 </div>
             </div>
@@ -88,7 +107,7 @@
                         <ul>
                             <li class="active"><a href="/Home/index">Homepage</a></li>
                             <li><a href="/Movie/categories">Categories</a></li>
-                            
+
                             <li><a href="#">Contacts</a></li>
                         </ul>
                     </div>

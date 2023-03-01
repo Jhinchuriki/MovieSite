@@ -71,6 +71,13 @@ namespace MovieSite.Repository
             }
             return -1;
         }
+        public List<Movie> getAllFavorites(int userId)
+        {
+            return (from a in context.Movies
+                    join b in context.Favorites on a.Id equals b.MovieId
+                    where b.UserId == userId
+                    select a).ToList();                
+        }
 
     }
 }
